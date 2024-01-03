@@ -1,22 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:untitled/config/app_color.dart';
 import 'package:untitled/config/local_storage.dart';
+import 'package:untitled/config/size_config.dart';
 import 'package:untitled/screens/HomaPage/home_page.dart';
 import 'package:untitled/widgets/button_view.dart';
 import 'package:untitled/widgets/toast.dart';
-import '../../config/size_config.dart';
 
-class CreatePasswordPage extends StatefulWidget {
-  const CreatePasswordPage({super.key});
+class PassWordScreen extends StatefulWidget {
+  const PassWordScreen({super.key});
 
   @override
-  State<CreatePasswordPage> createState() => _CreatePasswordPageState();
+  State<PassWordScreen> createState() => _PassWordScreenState();
 }
 
-class _CreatePasswordPageState extends State<CreatePasswordPage> {
+class _PassWordScreenState extends State<PassWordScreen> {
   String passwordOne = "";
   String passwordTwo = "";
 
@@ -55,34 +54,20 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
     }
   }
 
-  setPassword() async {
+  setPassword() {
     if (e1.text.isNotEmpty &&
-        e2.text.isNotEmpty &&
-        e3.text.isNotEmpty &&
-        e4.text.isNotEmpty) {
-      if (passwordOne.isEmpty) {
-        passwordOne = "${e1.text}${e2.text}${e3.text}${e4.text}";
-        e1.clear();
-        e2.clear();
-        e3.clear();
-        e4.clear();
-      } else {
-        passwordTwo = "${e1.text}${e2.text}${e3.text}${e4.text}";
-        if (passwordOne == passwordTwo) {
-          await SharePref.instance.setBool(SharePref.isLockDone, true);
-          await SharePref.instance.setString(SharePref.password, passwordOne);
-          await SharePref.instance.setBool(SharePref.isFirstTime, true);
-          // ignore: use_build_context_synchronously
+          e2.text.isNotEmpty &&
+          e3.text.isNotEmpty &&
+          e4.text.isNotEmpty) {
+        String pass = "${e1.text}${e2.text}${e3.text}${e4.text}";
+        if (SharePref.instance.getString(SharePref.password) == pass) {
           Navigator.of(context).pushReplacement(
-              CupertinoPageRoute(builder: (context) => HomaPage()));
+              CupertinoPageRoute(builder: (context) => const HomaPage()));
         } else {
-          showToast(context, "Wrong password");
+          showToast(context, "wrong password..");
         }
       }
-      setState(() {});
-    }
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -108,9 +93,7 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
               height: SizeConfig.screenHeight * 0.006,
             ),
             Text(
-              passwordOne.isEmpty
-                  ? "Create Your Password"
-                  : "ReEnter Vault PIN",
+              "Enter Your Password",
               style: TextStyle(
                   fontFamily: "Poppins",
                   fontSize: getProportionateScreenHeight(22),

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:untitled/config/app_color.dart';
+import 'package:untitled/config/local_storage.dart';
 import 'package:untitled/config/size_config.dart';
 import 'package:untitled/screens/Intro/intro_page1.dart';
+import 'package:untitled/screens/PasswordPage/password_screen.dart';
 
 class SplashScreeen extends StatefulWidget {
   const SplashScreeen({super.key});
@@ -18,7 +20,13 @@ class _SplashScreeenState extends State<SplashScreeen> {
     Future.delayed(
       const Duration(seconds: 5),
       () {
-        Get.to(() =>  const IntroPage1());
+        SharePref.instance.getBool(SharePref.isFirstTime) == true
+            ? Get.to(
+                () => const PassWordScreen(),
+              )
+            : Get.to(
+                () => IntroPage1(),
+              );
       },
     );
   }

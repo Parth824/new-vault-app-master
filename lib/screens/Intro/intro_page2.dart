@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:untitled/config/size_config.dart';
+import 'package:untitled/screens/PasswordPage/security_question.dart';
 import 'package:untitled/widgets/button_view.dart';
 import '../PasswordPage/create_password_screen.dart';
 
@@ -38,6 +39,7 @@ class _IntroPage2State extends State<IntroPage2> {
       return false;
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -106,8 +108,17 @@ class _IntroPage2State extends State<IntroPage2> {
                   horizontal: getProportionateScreenHeight(28)),
               child: buttonView(
                   title: "Grant Storage Access",
-                  onTap: () {
-                    Get.to(() => const CreatePasswordPage());
+                  onTap: () async {
+                    bool val = await externalStoragePermission(context);
+                    if (await Permission.photos.isDenied) {
+                      await Permission.photos.request();
+                    }
+                    if (await Permission.videos.isDenied) {
+                      await Permission.videos.request();
+                    }
+                    if (val) {
+                      Get.to(() => const SecurityQuestion());
+                    }
                   }),
             ),
           ],
