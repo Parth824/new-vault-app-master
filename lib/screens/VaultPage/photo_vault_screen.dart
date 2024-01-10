@@ -115,7 +115,9 @@ class _PhotoVaultScreenState extends State<PhotoVaultScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   buildContainer(
-                    onTap: () {},
+                    onTap: () {
+                      
+                    },
                     imagepath: "assets/svg/Images.svg",
                     text: "Photo (0)",
                   ),

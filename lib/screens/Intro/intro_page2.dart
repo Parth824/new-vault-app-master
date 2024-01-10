@@ -1,4 +1,8 @@
+import 'dart:io';
+
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:external_path/external_path.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -16,6 +20,51 @@ class IntroPage2 extends StatefulWidget {
 }
 
 class _IntroPage2State extends State<IntroPage2> {
+  void _createFolder() async {
+    final path = await ExternalPath.getExternalStoragePublicDirectory(
+        ExternalPath.DIRECTORY_PICTURES);
+    final folderPath = Directory("$path/gallerySafe");
+    if (await folderPath.exists()) {
+    } else {
+      folderPath.create();
+    }
+    final image = Directory("$path/image");
+    if (await image.exists()) {
+    } else {
+      image.create();
+    }
+    final folderPath2 = Directory("$path/gallerySafe/photos");
+    final folderPath3 = Directory("$path/gallerySafe/videos");
+    if (await folderPath2.exists()) {
+    } else {
+      folderPath2.create();
+    }
+    if (await folderPath3.exists()) {
+    } else {
+      folderPath3.create();
+    }
+    final folderPath4 = Directory("$path/gallerySafe/photos/.private");
+    final folderPath5 = Directory("$path/gallerySafe/videos/.private");
+    if (await folderPath4.exists()) {
+    } else {
+      folderPath4.create();
+    }
+    if (await folderPath5.exists()) {
+    } else {
+      folderPath5.create();
+    }
+    final folderPath6 = Directory("$path/gallerySafe/videos/.thumb");
+    if (await folderPath6.exists()) {
+    } else {
+      folderPath6.create();
+    }
+    // ignore: use_build_context_synchronously
+    Navigator.of(context).pushAndRemoveUntil(
+      CupertinoPageRoute(builder: (context) => const SecurityQuestion()),
+      (route) => false,
+    );
+  }
+
   static Future<bool> externalStoragePermission(BuildContext context) async {
     final androidVersion = await DeviceInfoPlugin().androidInfo;
 
@@ -117,7 +166,7 @@ class _IntroPage2State extends State<IntroPage2> {
                       await Permission.videos.request();
                     }
                     if (val) {
-                      Get.to(() => const SecurityQuestion());
+                      _createFolder();
                     }
                   }),
             ),
